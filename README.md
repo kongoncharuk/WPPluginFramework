@@ -86,7 +86,7 @@ Here's how it will look in practice:
 import WPPluginFramework/PFAction;
 
 class MyAction extends PFAction {
-	public function getHook(): string { return 'init'; }
+	public function getHookName(): string { return 'init'; }
     
     public function run($args) {
     	// act!

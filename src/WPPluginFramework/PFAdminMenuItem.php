@@ -2,7 +2,7 @@
 
 namespace WPPluginFramework;
 
-abstract class PFAdminMenuItem extends PFExtension {
+class PFAdminMenuItem extends PFExtension {
     private string $page_title = '';
     private string $menu_title = '';
     private string $capability = '';
@@ -66,7 +66,7 @@ abstract class PFAdminMenuItem extends PFExtension {
 
     /** WP registration helper (throws if required fields missing). */
     public function register(): void {
-        add_menu_page(
+        add_action('admin_menu', fn() => add_menu_page(
             $this->page_title,
             $this->menu_title,
             $this->capability,
@@ -74,6 +74,6 @@ abstract class PFAdminMenuItem extends PFExtension {
             $this->callback,
             $this->icon_url,
             $this->position
-        );
+        ));
     }
 }
