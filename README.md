@@ -35,7 +35,7 @@ Here's how it will look in practice:
 ```php
 # src/MyAdminPage.php
 
-import WPPluginFramework/PFAdminPage;
+use WPPluginFramework/PFAdminPage;
 
 class MyAdminPage extends PFAdminPage {
 	public function getMenu() {
@@ -61,15 +61,14 @@ Here's how it will look in practice:
 ```php
 # src/MyRestEndpoint.php
 
-import WPPluginFramework/PFRestEndpoint;
+use WPPluginFramework/PFRestEndpoint;
 
 class MyRestEndpoint extends PFRestEndpoint {
 	public function getNamespace(): string { return 'pf/v1'; }
     public function getRoute(): string { return '/hello'; }
-    public function getArgs(): array { return ['methods'  => 'GET']; }
 
-    public function run(WP_REST_Request $request): string {
-    	return json_encode(['result' => 'hello here']);
+    public function run(\WP_REST_Request $request): \WP_REST_Response {
+    	return new \WP_REST_Response(['result' => 'hello here']);
     }
 }
 ```
@@ -83,7 +82,7 @@ Here's how it will look in practice:
 ```php
 # src/MyAction.php
 
-import WPPluginFramework/PFAction;
+use WPPluginFramework/PFAction;
 
 class MyAction extends PFAction {
 	public function getHookName(): string { return 'init'; }
@@ -98,7 +97,7 @@ class MyAction extends PFAction {
 ```php
 # src/MyPage.php
 
-import WPPluginFramework/PFPage;
+use WPPluginFramework/PFPage;
 
 class AboutUsPage extends PFPage {
 	public function getTitle(): string { return 'About Us'; }
@@ -134,9 +133,9 @@ Simple example with autoload:
  * Plugin Name: My awesome plugin
  */
 
-import Pages/Admin/MyAdminPage;
-import Pages/User/AboutUsPage;
-import WPPluginFramework/Loader;
+use Pages/Admin/MyAdminPage;
+use Pages/User/AboutUsPage;
+use WPPluginFramework/Loader;
 
 Loader::autoload();
 
