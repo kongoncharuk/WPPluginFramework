@@ -9,6 +9,6 @@ abstract class PFFilter extends PFExtension {
 
     /** Registers the filter */
     public function register(): void {
-        add_filter($this->getHookName(), fn($args) => call_user_func_array([$this, 'run'], func_get_args()));
+        add_filter($this->getHookName(), fn($args) => call_user_func([$this, 'run'], func_get_args()));
     }
 }

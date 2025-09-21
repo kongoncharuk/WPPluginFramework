@@ -7,6 +7,6 @@ abstract class PFAction extends PFExtension {
 
 	/** Registers the action */
     public function register(): void {
-        add_filter($this->getHookName(), fn($args) => call_user_func_array([$this, 'run'], func_get_args()));
+        add_filter($this->getHookName(), fn($args) => call_user_func([$this, 'run'], func_get_args()));
     }
 }
