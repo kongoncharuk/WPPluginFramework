@@ -8,8 +8,6 @@ use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
 abstract class PFExtension {
-    private static ?array $config = null;
-
     protected function assertRequired(array $keys): void {
         foreach ($keys as $key) {
             if ($key === 'args') {
@@ -20,17 +18,8 @@ abstract class PFExtension {
         }
     }
 
-    protected function getConfig(): array {
-        if (self::$config === null) {
-            $root = defined('BASE_PATH') ? BASE_PATH : getcwd();
-            if (is_string($root) && is_dir($root)) {
-                $dotenv = Dotenv::createImmutable($root);
-                $dotenv->safeLoad();
-            }
-
-            self::$config = $_ENV;
-        }
-        return self::$config ?? [];
+    protected function getConfig(): Config {
+        return new Config();
     }
 
     /**
