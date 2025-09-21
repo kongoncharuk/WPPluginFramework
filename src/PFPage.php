@@ -5,37 +5,14 @@ namespace WPPluginFramework;
 abstract class PFPage extends PFExtension {
     abstract public function getTitle(): string;
 
-    public function getContent(): string {
-        return '';
-    }
-
-    public function getSlug(): string {
-        return '';
-    }                 // if empty, WP derives from title
-
-    public function getStatus(): string {
-        return 'publish';
-    }
-
-    public function getAuthor(): ?int {
-        return null;
-    }
-
-    public function getParent(): ?int {
-        return null;
-    }
-
-    public function getTemplate(): string {
-        return '';
-    }
-
-    public function getMeta(): array {
-        return [];
-    }
-
-    public function getExcerpt(): string {
-        return '';
-    }
+    public function getContent(): string { return ''; }
+    public function getSlug(): string { return '';}  // if empty, WP derives from title
+    public function getStatus(): string { return 'publish'; }
+    public function getAuthor(): ?int { return null; }
+    public function getParent(): ?int { return null; }
+    public function getTemplate(): string { return ''; }
+    public function getMeta(): array { return []; }
+    public function getExcerpt(): string { return ''; }
 
     /**
      * Create or update the page (idempotent). Returns page ID.
@@ -89,14 +66,14 @@ abstract class PFPage extends PFExtension {
         return $pageId;
     }
 
-    private function findExisting(string $slug, string $title): ?WP_Post {
+    private function findExisting(string $slug, string $title): ?\WP_Post {
         if ($slug !== '') {
             $page = get_page_by_path($slug, OBJECT, 'page');
-            if ($page instanceof WP_Post) return $page;
+            if ($page instanceof \WP_Post) return $page;
         }
         if ($title !== '') {
             $page = get_page_by_title($title, OBJECT, 'page');
-            if ($page instanceof WP_Post) return $page;
+            if ($page instanceof \WP_Post) return $page;
         }
         return null;
     }
