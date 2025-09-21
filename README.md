@@ -39,11 +39,11 @@ import WPPluginFramework/PFAdminPage;
 
 class MyAdminPage extends PFAdminPage {
 	public function getMenu() {
-		return new PFAdminMenuItem()
+		return (new PFAdminMenuItem())
 			->setPageTitle("My menu")
 			->setMenuTitle("My menu")
 			->setMenuSlug("my_menu")
-			->setCapability("list_users")
+			->setCapability("list_users");
 	}
 
 	public function getPageContent() {
@@ -133,7 +133,7 @@ Simple example with autoload:
 /*
  * Plugin Name: My awesome plugin
  */
-  
+
 import Pages/Admin/MyAdminPage;
 import Pages/User/AboutUsPage;
 import WPPluginFramework/Loader;

@@ -8,11 +8,11 @@ abstract class PFRestEndpoint extends PFExtension {
 
     abstract public function getRoute(): string;
 
-    public function getArgs(): array {
-        return [];
+    public function getArgs(string $method = 'GET'): array {
+        return ['methods' => $method];
     }
 
-    abstract public function run(WP_REST_Request $request): string;
+    abstract public function run(WP_REST_Request $request): WP_REST_Response;
 
     /** Registers the endpoint with WP REST API */
     public function register(): void {

@@ -29,3 +29,5 @@ function wp_get_current_user() { return new \stdClass(); }
 class WP_Post {}
 
 class WP_REST_Request {}
+
+class WP_REST_Response {}
