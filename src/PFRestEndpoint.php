@@ -21,6 +21,7 @@ abstract class PFRestEndpoint extends PFExtension {
             $route = $this->getRoute();
             if ($route !== '' && $route[0] !== '/') $route = '/' . $route;
 
+            $this->getLogger()->debug('Registering REST endpoint', ['namespace' => $this->getNamespace(), 'route' => $route, 'args' => $this->getArgs()]);
             register_rest_route($this->getNamespace(), $route, $this->getArgs());
         });
     }
