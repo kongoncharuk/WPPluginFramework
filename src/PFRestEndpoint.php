@@ -25,7 +25,7 @@ abstract class PFRestEndpoint extends PFExtension {
             $args['callback'] = [$this, 'run'];
             $args['permission_callback'] = '__return_true';
 
-            $this->getLogger('DEBUG')->debug('Registering REST endpoint', ['namespace' => $this->getNamespace(), 'route' => $route, 'args' => $this->getArgs()]);
+            $this->getLogger()->debug('Registering REST endpoint', ['namespace' => $this->getNamespace(), 'route' => $route, 'args' => $this->getArgs()]);
             register_rest_route($this->getNamespace(), $route, $args);
         });
     }
