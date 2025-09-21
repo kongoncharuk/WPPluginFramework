@@ -25,9 +25,25 @@ function current_user_can(string $capability, ...$args): bool { return true; }
 function wp_delete_user(int $id): bool { return true; }
 function rest_do_request($request) { return new \stdClass(); }
 function wp_get_current_user() { return new \stdClass(); }
+function get_current_user_id() { return 1; }
+function is_user_logged_in() { return true; }
+function wp_logout() {}
+function wp_redirect(string $url) {}
+function update_user_meta( int $user_id, string $meta_key, mixed $meta_value, mixed $prev_value = '' ): int|bool { return true; }
 
 class WP_Post {}
 
-class WP_REST_Request {}
+class WP_User {
+    public function __construct(string|int $code = '', string $message = '', mixed $data = '') {}
+}
 
-class WP_REST_Response {}
+class WP_REST_Request {
+    public function get_json_params(): array { return [];}
+    public function get_header(string $key): string|null { return ''; }
+    public function get_params(): array { return []; }
+    public function get_body(): string { return ''; }
+}
+
+class WP_REST_Response {
+    public function __contruct($data = null, int $status = 200, array $headers = []) {}
+}
