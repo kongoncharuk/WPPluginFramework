@@ -32,7 +32,7 @@ abstract class PFExtension {
     final protected function getLogger(?string $logLevel = null, ?string $loggerName = null): LoggerInterface {
         $levelName = strtoupper($logLevel ?? $this->getConfig()->get('LOG_LEVEL', 'INFO'));
 
-        $level = class_exists(\Monolog\Level::class) ? Level::fromName($levelName) : Logger::toMonologLevel($levelName);
+        $level = class_exists(Level::class) ? Level::fromName($levelName) : Logger::toMonologLevel($levelName);
 
         $name = $loggerName ?? static::class;
         $logger = new Logger($name);
