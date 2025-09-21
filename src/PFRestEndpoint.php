@@ -16,6 +16,12 @@ abstract class PFRestEndpoint extends PFExtension {
 
     /** Registers the endpoint with WP REST API */
     public function register(): void {
-        register_rest_route($this->getNamespace(), $this->getRoute(), $this->getArgs());
+        add_action('rest_api_init', function () {
+            // Ensure route starts with a leading slash (e.g., '/auth')
+            $route = $this->getRoute();
+            if ($route !== '' && $route[0] !== '/') $route = '/' . $route;
+
+            register_rest_route($this->getNamespace(), $route, $this->getArgs());
+        });
     }
 }
