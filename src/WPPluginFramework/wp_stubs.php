@@ -1,6 +1,4 @@
 <?php
-namespace WPPluginFramework;
-
 // Stubs for WordPress functions and classes used by the framework.
 function add_action(string $hook, Callable $func) {}
 function add_filter(string $hook, Callable $func) {}
