@@ -35,7 +35,11 @@ abstract class PFExtension {
             : Logger::toMonologLevel(strtoupper($levelName));
 
         $logger = new Logger($loggerName ?? static::class);
+        // Info & below -> STDOUT
         $logger->pushHandler(new StreamHandler('php://stdout', $level));
+        // Warnings & above -> STDERR (so they stand out)
+        $warnLevel = class_exists(\Monolog\Level::class) ? \Monolog\Level::Warning : Logger::WARNING;
+        $logger->pushHandler(new StreamHandler('php://stderr', $warnLevel, /*bubble*/ false));
 
         return $logger;
     }
