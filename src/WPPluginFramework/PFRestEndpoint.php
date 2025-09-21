@@ -12,7 +12,7 @@ abstract class PFRestEndpoint extends PFExtension {
         return ['methods' => $method];
     }
 
-    abstract public function run(\WP_REST_Request $request): \WP_REST_Response;
+    abstract public function run(\WP_REST_Request $request): \WP_REST_Response|\WP_Error;
 
     /** Registers the endpoint with WP REST API */
     public function register(): void {

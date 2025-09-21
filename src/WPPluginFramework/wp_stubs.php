@@ -45,3 +45,7 @@ class WP_REST_Request {
 class WP_REST_Response {
     public function __contruct($data = null, int $status = 200, array $headers = []) {}
 }
+
+class WP_Error {
+    public function __construct( string|int $code = '', string $message = '', mixed $data = '' ) {}
+}
