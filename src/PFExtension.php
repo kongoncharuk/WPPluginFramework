@@ -4,6 +4,7 @@ namespace WPPluginFramework;
 
 use Dotenv\Dotenv;
 use Monolog\Handler\StreamHandler;
+use Monolog\Level;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 
@@ -25,21 +26,18 @@ abstract class PFExtension {
     /**
      * Get a Monolog logger.
      *
-     * @param string|null $logLevel Monolog log level name (e.g. "DEBUG", "INFO")
+     * @param string|null $logLevel Monolog log level name (e.g. "DEBUG", "INFO"). If not specified setting 'LOG_LEVEL' from config is used. Defaults to "INFO".
      * @param string|null $loggerName Name for the logger (defaults to class name)
      */
-    protected function getLogger(?string $logLevel = null, ?string $loggerName = null): LoggerInterface {
-        $levelName = $logLevel ?? 'INFO';
-        $level = class_exists(\Monolog\Level::class)
-            ? \Monolog\Level::fromName(strtoupper($levelName))
-            : Logger::toMonologLevel(strtoupper($levelName));
+    final protected function getLogger(?string $logLevel = null, ?string $loggerName = null): LoggerInterface {
+        $levelName = strtoupper($logLevel ?? $this->getConfig()->get('LOG_LEVEL', 'INFO'));
 
-        $logger = new Logger($loggerName ?? static::class);
-        // Info & below -> STDOUT
+        $level = class_exists(\Monolog\Level::class) ? Level::fromName($levelName) : Logger::toMonologLevel($levelName);
+
+        $name = $loggerName ?? static::class;
+        $logger = new Logger($name);
+
         $logger->pushHandler(new StreamHandler('php://stdout', $level));
-        // Warnings & above -> STDERR (so they stand out)
-        $warnLevel = class_exists(\Monolog\Level::class) ? \Monolog\Level::Warning : Logger::WARNING;
-        $logger->pushHandler(new StreamHandler('php://stderr', $warnLevel, /*bubble*/ false));
 
         return $logger;
     }
