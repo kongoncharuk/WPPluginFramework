@@ -18,6 +18,10 @@ abstract class PFPage extends PFExtension {
      * Create or update the page (idempotent). Returns page ID.
      */
     public function update(?string $logLevel = null): int {
+        if (!$this->hasChanged()) {
+            return 0; // No change, skip update
+        }
+
         $logger = $this->getLogger($logLevel);
 
         $title = trim($this->getTitle());
@@ -80,5 +84,35 @@ abstract class PFPage extends PFExtension {
 
     public function register(): void {
         add_action('init', fn() => $this->update('INFO'));
+    }
+
+    public function getHash(): string {
+        return md5($this->getTitle() . '|' .
+            $this->getSlug() . '|' .
+            $this->getContent() . '|' .
+            $this->getStatus() . '|' .
+            $this->getAuthor() . '|' .
+            $this->getParent() . '|' .
+            $this->getTemplate() . '|' .
+            implode('|', array_map(fn($k,$v) => $k.'='.$v, array_keys($this->getMeta()), $this->getMeta())) . '|' .
+            $this->getExcerpt()
+        );
+    }
+
+    public function hasChanged(): bool {
+        $pageCacheFile = WP_CONTENT_DIR.'/cachedPages.json';
+        if (file_exists($pageCacheFile)) {
+            $pageVersions = json_decode(file_get_contents($pageCacheFile), true);
+            if (!is_array($pageVersions)) $pageVersions = [];
+            if (isset($pageVersions[$this->getSlug()]) && $pageVersions[$this->getSlug()] === $this->getHash()) {
+                return false; // No change
+            }
+            return true; // Changed
+        } else {
+            $pageVersions = [];
+            $pageVersions[$this->getSlug()] = $this->getHash();
+            file_put_contents($pageCacheFile, json_encode($pageVersions));
+            return true; // Changed
+        }
     }
 }
