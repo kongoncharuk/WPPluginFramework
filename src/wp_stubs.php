@@ -189,7 +189,7 @@ function add_screen_option(): void {}
 function add_settings_error(): void {}
 function add_settings_field(): void {}
 function add_settings_section(): void {}
-function add_shortcode(): void {}
+function add_shortcode(string $tag, callable $callback): void {}
 function add_submenu_page(): void {}
 function add_term_meta(): void {}
 function add_theme_page(): void {}
