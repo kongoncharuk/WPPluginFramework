@@ -9,7 +9,8 @@ abstract class PFAdminPage extends PFExtension {
 
     /** Registers the admin page */
     public function register(): void {
-        $this->getMenu()->setCallback(fn() => $this->getPageContent());
-        $this->getMenu()->register();
+        $menu = $this->getMenu();
+        $menu->setCallback(fn() => $this->getPageContent());
+        $menu->register();
     }
 }
