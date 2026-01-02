@@ -64,7 +64,10 @@ abstract class PFPage extends PFExtension {
             $logger->info('PFPage created', ['id' => $pageId, 'slug' => $slug, 'title' => $title]);
         }
 
-        if ($template !== '') update_post_meta($pageId, '_wp_page_template', $template);
+        if ($template !== '') {
+            $logger->info('PFPage setting template', ['id' => $pageId, 'template' => $template]);
+            update_post_meta($pageId, '_wp_page_template', $template);
+        }
         foreach ($meta as $k => $v) update_post_meta($pageId, $k, $v);
 
         return $pageId;
@@ -104,9 +107,14 @@ abstract class PFPage extends PFExtension {
         if (file_exists($pageCacheFile)) {
             $pageVersions = json_decode(file_get_contents($pageCacheFile), true);
             if (!is_array($pageVersions)) $pageVersions = [];
+            
             if (isset($pageVersions[$this->getSlug()]) && $pageVersions[$this->getSlug()] === $this->getHash()) {
                 return false; // No change
             }
+            
+            // Update cache with new hash
+            $pageVersions[$this->getSlug()] = $this->getHash();
+            file_put_contents($pageCacheFile, json_encode($pageVersions));
             return true; // Changed
         } else {
             $pageVersions = [];
