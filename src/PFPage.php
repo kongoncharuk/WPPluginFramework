@@ -10,7 +10,7 @@ abstract class PFPage extends PFExtension {
     public function getStatus(): string { return 'publish'; }
     public function getAuthor(): ?int { return null; }
     public function getParent(): ?int { return null; }
-    public function getTemplate(): string { return ''; }
+    public function getTemplate(): string { return 'default'; }
     public function getMeta(): array { return []; }
     public function getExcerpt(): string { return ''; }
 
@@ -87,6 +87,15 @@ abstract class PFPage extends PFExtension {
 
     public function register(): void {
         add_action('init', fn() => $this->update('INFO'));
+
+        if ($this->getTemplate() === '') {
+            add_action('template_redirect', function() {
+                if (is_page($this->getSlug())) {
+                     echo $this->getContent();
+                     exit;
+                }
+            });
+        }
     }
 
     public function getHash(): string {
